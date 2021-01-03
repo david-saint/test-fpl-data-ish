@@ -53,7 +53,7 @@ async function getFans() {
   const outputStream = fs.createWriteStream( __dirname + "/fans.json" );
 
   transformStream.pipe( outputStream );
-  fans.forEach( transformStream.write );
+  manu_fans.forEach( transformStream.write );
   transformStream.end();
 
   outputStream.on(
