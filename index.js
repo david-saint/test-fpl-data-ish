@@ -32,7 +32,7 @@ async function getFans() {
       const {data} = response;
       console.log(data);
       manu_fans.push(...data.standings.results);
-      const matched = data.standings.results.filter(f => f.entry_name.contains(NEEDLE))
+      const matched = data.standings.results.filter(f => f.entry_name.includes(NEEDLE))
       matches.push(...matched)
       has_next = data.standings.has_next;
       page_standings += 1;
