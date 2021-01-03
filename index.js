@@ -1,7 +1,9 @@
 const fs = require('fs');
 const axios = require('axios');
+var JSONStream = require('JSONStream');
 
 const manu_fans = [];
+const matches = []
 const NEEDLE = 'Spending';
 const API_URL = "https://fantasy.premierleague.com/api/leagues-classic/13/standings/";
 
@@ -30,6 +32,8 @@ async function getFans() {
       const {data} = response;
       console.log(data);
       manu_fans.push(...data.standings.results);
+      const matched = data.standings.results.filter(f => f.entry_name.contains(NEEDLE))
+      matches.push(...matched)
       has_next = data.standings.has_next;
       page_standings += 1;
     } catch (e) {
@@ -45,23 +49,33 @@ async function getFans() {
   }
 
   console.log("saving all fans \n")
-  fs.writeFile("fans.json", JSON.stringify(manu_fans, undefined, 2), function (err) {
-    console.log(err);
-    console.log("done saving fans \n")
-  });
+  const transformStream = JSONStream.stringify();
+  const outputStream = fileSystem.createWriteStream( __dirname + "/fans.json" );
+
+  transformStream.pipe( outputStream );
+  fans.forEach( transformStream.write );
+  transformStream.end();
+
+  outputStream.on(
+    "finish",
+    function handleFinish() {
+
+      console.log("Finished saving all fans on fpl. \n");
+      console.log( "- - - - - - - - - - - - - - - - - - - - - - - \n" );
+
+    }
+  );
+
+
 
   try {
-    console.log("Looking for", NEEDLE);
-    const matches = manu_fans.filter(fan => fan.entry_name.contains(NEEDLE));
-    console.log("saving matches \n")
+    console.log("Started saving matches")
     fs.writeFile("matches.json", JSON.stringify(matches, undefined, 2), function (err) {
       console.log("done saving matches", err);
     })
   } catch (e) {
     console.log("Error", e)
   }
-
-  console.log("done; \n")
 }
 
 getFans();
