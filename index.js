@@ -37,7 +37,7 @@ async function getFans() {
       has_next = data.standings.has_next;
       page_standings += 1;
     } catch (e) {
-      console.log("Error");
+      console.log("Error", e);
       if (e.code !== 'ETIMEDOUT') {
         break;
       }
