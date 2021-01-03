@@ -5,7 +5,7 @@ var JSONStream = require('JSONStream');
 const manu_fans = [];
 const matches = []
 const NEEDLE = 'Spending';
-const API_URL = "https://fantasy.premierleague.com/api/leagues-classic/13/standings/";
+const API_URL = "https://fantasy.premierleague.com/api/leagues-classic/177/standings/";
 
 function wait(delay = 10) {
   return new Promise((resolve) => {
@@ -50,7 +50,7 @@ async function getFans() {
 
   console.log("saving all fans \n")
   const transformStream = JSONStream.stringify();
-  const outputStream = fs.createWriteStream( __dirname + "/fans.json" );
+  const outputStream = fs.createWriteStream( __dirname + "/nigerian-fans.json" );
 
   transformStream.pipe( outputStream );
   manu_fans.forEach( transformStream.write );
@@ -70,7 +70,7 @@ async function getFans() {
 
   try {
     console.log("Started saving matches")
-    fs.writeFile("matches.json", JSON.stringify(matches, undefined, 2), function (err) {
+    fs.writeFile("nigerian-matches.json", JSON.stringify(matches, undefined, 2), function (err) {
       console.log("done saving matches", err);
     })
   } catch (e) {
