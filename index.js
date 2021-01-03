@@ -50,7 +50,7 @@ async function getFans() {
 
   console.log("saving all fans \n")
   const transformStream = JSONStream.stringify();
-  const outputStream = fileSystem.createWriteStream( __dirname + "/fans.json" );
+  const outputStream = fs.createWriteStream( __dirname + "/fans.json" );
 
   transformStream.pipe( outputStream );
   fans.forEach( transformStream.write );
